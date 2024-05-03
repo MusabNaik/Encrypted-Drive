@@ -1,22 +1,35 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import GoogleAuth from './GoogleAuth';
+import FileUpload from './FileUpload';
 
 function App() {
+  const [accessToken, setAccessToken] = useState('');
+
+  const clientId = '761043493236-mpvo1l2ppqusk3jt7t6o3jjv8tnnt8vs.apps.googleusercontent.com';
+
+  const onSuccess = (response) => {
+    console.log('Google authentication successful:', response);
+    setAccessToken(response.access_token);
+  };
+
+  const onError = (error) => {
+    console.error('Google authentication error:', error);
+    alert('Google authentication failed. Please try again.');
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Google Drive File Upload</h1>
+        <GoogleOAuthProvider clientId={clientId}>
+          {accessToken ? (
+            <FileUpload accessToken={accessToken} />
+          ) : (
+            <GoogleAuth onSuccess={onSuccess} onError={onError} clientId={clientId} />
+          )}
+        </GoogleOAuthProvider>
       </header>
     </div>
   );
