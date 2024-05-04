@@ -68,7 +68,7 @@ const FileUpload = ({ accessToken }) => {
       </div>
 
       <div style={{ marginTop: '80px' }}>
-        <h2>Files in 'Encrypted-Drive' Folder:</h2>
+        <h2>Files in 'Encrypted-Drive' folder:</h2>
         <table style={{ width: '100%' }}>
           <thead>
             <tr>

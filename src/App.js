@@ -23,6 +23,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Encrypted Google Drive</h1>
+        <p>Files will be encrypted and saved in the 'Encrypted-Drive' folder on the Google Drive</p>
         <GoogleOAuthProvider clientId={clientId}>
           {accessToken ? (
             <FileUpload accessToken={accessToken} />
