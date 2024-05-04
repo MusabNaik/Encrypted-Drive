@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Google Drive File Upload</h1>
+        <h1>Encrypted Google Drive</h1>
         <GoogleOAuthProvider clientId={clientId}>
           {accessToken ? (
             <FileUpload accessToken={accessToken} />
