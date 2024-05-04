@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
+import CryptoJS from 'crypto-js';
 
 const FileUpload = ({ accessToken }) => {
   const [filesList, setFilesList] = useState([]);
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     // Fetch list of files in 'Encrypted-Drive' folder when component mounts
@@ -24,7 +26,13 @@ const FileUpload = ({ accessToken }) => {
 
     if (file) {
       try {
-        const response = await uploadToGoogleDrive(file, accessToken);
+        if (!password) {
+          alert('Please enter a password to encrypt the file.');
+          return;
+        }
+
+        const encryptedFile = await encryptFile(file, password);
+        const response = await uploadToGoogleDrive(encryptedFile, file.name, accessToken);
         console.log('File uploaded successfully:', response);
         alert('File uploaded successfully!');
         // Refresh the files list after upload
@@ -36,17 +44,17 @@ const FileUpload = ({ accessToken }) => {
     }
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
   const handleDownload = async (fileId, fileName) => {
     try {
-      const downloadUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`;
-      const response = await fetch(downloadUrl, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const blob = await response.blob();
+      const password = prompt('Enter password to decrypt the file:');
+      if (!password) {
+        return;
+      }
+
+      const encryptedData = await downloadFromGoogleDrive(fileId, accessToken);
+      const decryptedFile = await decryptFile(encryptedData, password, fileName);
+
+      const blob = new Blob([decryptedFile], { type: 'application/octet-stream' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -59,12 +67,38 @@ const FileUpload = ({ accessToken }) => {
     }
   };
 
+  const encryptFile = async (file, password) => {
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onload = () => {
+        const encrypted = CryptoJS.AES.encrypt(reader.result, password).toString();
+        resolve(encrypted);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const decryptFile = async (encryptedData, password, fileName) => {
+    const decrypted = CryptoJS.AES.decrypt(encryptedData, password).toString(CryptoJS.enc.Latin1);
+    return decrypted;
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
   return (
     <div>
       <div {...getRootProps()} style={{ padding: '20px', border: '1px dashed #ccc', textAlign: 'center' }}>
         <input {...getInputProps()} />
         <p>Encrypt and upload files</p>
         <p>Drag and drop a file here, or click to select a file</p>
+        <input
+          type="password"
+          placeholder="Enter encryption password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ marginTop: '10px' }}
+        />
       </div>
 
       <div style={{ marginTop: '80px' }}>
@@ -92,19 +126,22 @@ const FileUpload = ({ accessToken }) => {
   );
 };
 
-async function uploadToGoogleDrive(file, accessToken) {
+async function uploadToGoogleDrive(fileContent, file_name, accessToken) {
   const folderName = 'Encrypted-Drive';
   const folderId = await getOrCreateFolderId(folderName, accessToken);
 
   const metadata = {
-    name: file.name,
+    name: file_name, // You can adjust the file name if needed
     parents: [folderId],
   };
 
+  // Create a Blob from the encrypted data
+  const blob = new Blob([fileContent], { type: 'application/octet-stream' });
+  
   const formData = new FormData();
   formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-  formData.append('file', file, file.name);
-
+  formData.append('file', blob, file_name);
+  
   const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
     method: 'POST',
     headers: {
@@ -118,6 +155,21 @@ async function uploadToGoogleDrive(file, accessToken) {
   }
 
   return response.json();
+}
+
+async function downloadFromGoogleDrive(fileId, accessToken) {
+  const downloadUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`;
+  const response = await fetch(downloadUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to download file from Google Drive');
+  }
+
+  return response.text();
 }
 
 async function getOrCreateFolderId(folderName, accessToken) {
