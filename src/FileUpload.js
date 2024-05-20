@@ -4,7 +4,7 @@ import CryptoJS from 'crypto-js';
 
 const FileUpload = ({ accessToken }) => {
   const [filesList, setFilesList] = useState([]);
-  const [password, setPassword] = useState('');
+  //const [password, setPassword] = useState('');
 
   useEffect(() => {
     // Fetch list of files in 'Encrypted-Drive' folder when component mounts
@@ -26,6 +26,7 @@ const FileUpload = ({ accessToken }) => {
 
     if (file) {
       try {
+        const password = prompt('Enter password to encrypt the file:');
         if (!password) {
           alert('Please enter a password to encrypt the file.');
           return;
@@ -52,9 +53,13 @@ const FileUpload = ({ accessToken }) => {
       }
 
       const encryptedData = await downloadFromGoogleDrive(fileId, accessToken);
-      const decryptedFile = await decryptFile(encryptedData, password, fileName);
+      const filetype = encryptedData.split('\n')[0];
+      const decryptedFile = await decryptFile(encryptedData.replace(filetype + '\n', ''), password, fileName);
+      const decryptedWordArray = decryptedFile.toString(CryptoJS.enc.Latin1);
+      const decryptedData = new Uint8Array(decryptedWordArray.match(/[\s\S]/g).map((ch) => ch.charCodeAt(0)));
 
-      const blob = new Blob([decryptedFile], { type: 'application/octet-stream' });
+      //const blob = new Blob([decryptedData], { type: 'application/pdf' });
+      const blob = new Blob([decryptedData], { type: filetype });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -71,16 +76,20 @@ const FileUpload = ({ accessToken }) => {
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
       reader.onload = () => {
-        const encrypted = CryptoJS.AES.encrypt(reader.result, password).toString();
-        resolve(encrypted);
+
+        const encrypted = CryptoJS.AES.encrypt(CryptoJS.lib.WordArray.create(reader.result), password).toString();
+        resolve(file.type+'\n'+encrypted);
+        //resolve(encrypted);
       };
       reader.onerror = reject;
-      reader.readAsDataURL(file);
+      reader.readAsArrayBuffer(file);
     });
   };
 
   const decryptFile = async (encryptedData, password, fileName) => {
-    const decrypted = CryptoJS.AES.decrypt(encryptedData, password).toString(CryptoJS.enc.Latin1);
+    const decrypted = CryptoJS.AES.decrypt(encryptedData, password);
+    //const decrypted = CryptoJS.AES.decrypt(encryptedData, password);
+
     return decrypted;
   };
 
@@ -92,13 +101,13 @@ const FileUpload = ({ accessToken }) => {
         <input {...getInputProps()} />
         <p>Encrypt and upload files</p>
         <p>Drag and drop a file here, or click to select a file</p>
-        <input
+        {/* <input
           type="password"
           placeholder="Enter encryption password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={{ marginTop: '10px' }}
-        />
+        /> */}
       </div>
 
       <div style={{ marginTop: '80px' }}>
@@ -137,6 +146,8 @@ async function uploadToGoogleDrive(fileContent, file_name, accessToken) {
 
   // Create a Blob from the encrypted data
   const blob = new Blob([fileContent], { type: 'application/octet-stream' });
+  //const encryptedFile = new Blob([encrypted], { type: 'application/octet-stream' });
+
   
   const formData = new FormData();
   formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
