@@ -60,7 +60,7 @@ Welcome to the File Encryptor & Decryptor project! This nifty React app allows y
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests. Make sure to follow the [contribution guidelines](https://chatgpt.com/c/CONTRIBUTING.md).
+Feel free to submit issues and enhancement requests and customize it further based on your preferences.
 
 ## License
 
@@ -69,4 +69,3 @@ This project is licensed under the MIT License.
 ## Final Note
 
 Remember, keeping your data safe is your responsibility. Encrypting your files before uploading them to the cloud is a good practice to ensure your privacy in this ever-surveilling world. Stay safe, stay private!
-
