@@ -3,7 +3,7 @@
 ### Are you skeptical about big brother (governments) having backdoor access to your Google Drive? 🛡️ Worry not, encrypt your data before uploading and keep your secrets safe!
 
 ## Introduction
-Welcome to the File Encryptor & Decryptor project! This nifty React app allows you to encrypt your files with a password before uploading them to your Google Drive, ensuring that only you and those with the password can access your precious data. Whether it's PDFs, Word documents, images, or even text files, we've got you covered. 
+Welcome to the File Encryptor & Decryptor project! This nifty React app allows you to encrypt your files with a password before uploading them to your Google Drive, ensuring that only you and those with the password can access your precious data. Whether it's PDFs, Word documents, images, or even text files, we've got you covered. Best of all, all encryption and decryption processes occur locally on your machine—no backend server involved. This means that your unencrypted data and password never leave your machine, providing you with an extra layer of privacy and security. Keep your files safe and secure with our local encryption solution.
 
 ## Features
 - **Encrypt Files**: Secure your files by encrypting them with a password.
@@ -33,13 +33,11 @@ Welcome to the File Encryptor & Decryptor project! This nifty React app allows y
     
     -   Select a file you want to encrypt.
     -   Enter a password.
-    -   Click the "Encrypt File" button.
-    -   The encrypted file will be automatically downloaded with a `.encrypted` extension.
+    -   The encrypted file will be automatically uploaded to your Google Drive.
 2.  **Decrypting a File**:
     
     -   Select an encrypted file.
     -   Enter the password used for encryption.
-    -   Click the "Decrypt File" button.
     -   The decrypted file will be automatically downloaded with its original extension.
 
 ## Code Structure
