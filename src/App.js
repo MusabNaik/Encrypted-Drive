@@ -22,8 +22,14 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Encrypted Google Drive</h1>
-        <a href="https://musabnaik.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: 'white', fontSize: '18px' }}>Privacy Policy</a>
+        <h1 style={{ marginBottom: '5px' }}>Encrypted Google Drive</h1>        
+        <table style={{ marginTop: '5px' }}>    
+          <td><a href="https://musabnaik.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: 'white', fontSize: '18px' }}>Privacy Policy</a></td>
+          <td>  </td>
+          <td>  </td>
+          <td>  </td>
+          <td><a href="https://musabnaik.com" target="_blank" rel="noopener noreferrer" style={{ color: 'white', fontSize: '18px' }}>Musab Naik</a></td>
+        </table>
         <p>Files will be encrypted and saved in the 'Encrypted-Drive' folder on the Google Drive</p>
         <GoogleOAuthProvider clientId={clientId}>
           {accessToken ? (
