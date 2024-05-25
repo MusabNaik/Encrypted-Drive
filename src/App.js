@@ -23,6 +23,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Encrypted Google Drive</h1>
+        <a href="https://musabnaik.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: 'white', fontSize: '18px' }}>Privacy Policy</a>
         <p>Files will be encrypted and saved in the 'Encrypted-Drive' folder on the Google Drive</p>
         <GoogleOAuthProvider clientId={clientId}>
           {accessToken ? (
