@@ -1,5 +1,6 @@
 import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
+import googleLogin from './images/web_neutral_sq_SI.svg'; 
 
 const GoogleAuth = ({ onSuccess, onError, clientId }) => {
   const login = useGoogleLogin({
@@ -10,7 +11,7 @@ const GoogleAuth = ({ onSuccess, onError, clientId }) => {
   });
 
   return (
-    <button onClick={login}>Sign in with Google 🚀</button>
+    <button onClick={login}><img src={googleLogin} alt="Sign In with Google"  /></button>
   );
 };
 
