@@ -97,7 +97,7 @@ const FileUpload = ({ accessToken }) => {
 
   return (
     <div>
-      <div {...getRootProps()} style={{ padding: '20px', border: '1px dashed #ccc', textAlign: 'center' }}>
+      <div {...getRootProps()} style={{ padding: '20px', border: '1px dashed #ccc', textAlign: 'center', marginTop: '40px'}}>
         <input {...getInputProps()} />
         <p>Encrypt and upload files</p>
         <p>Drag and drop a file here, or click to select a file</p>

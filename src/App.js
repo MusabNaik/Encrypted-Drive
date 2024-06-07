@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 style={{ marginBottom: '5px' }}>Encrypted Google Drive</h1>        
+        <h1 style={{ marginBottom: '5px' }}>Encrypted Drive</h1>        
         <table style={{ marginTop: '5px' }}> 
           <td><a href="https://musabnaik.com/Encrypted-Drive/" style={{ color: 'white', fontSize: '18px' }}>Home</a></td>
           <td>  </td>
@@ -46,7 +46,7 @@ function App() {
               unencrypted files by entering the password used for encryption. The app supports all file types.
             </p>
             <h4 style={{marginBottom: '0px'}}>How We Use Your Data</h4>
-            <p style={{fontSize: '20px', width: '70%', textAlign: 'center', marginTop: '0px'}}>
+            <p style={{fontSize: '20px', width: '70%', textAlign: 'center', marginTop: '0px', marginBottom: '40px'}}>
               The app uses Google OAuth to authenticate and gain access to your Google Drive. The app creates a dedicated 
               folder named "Encrypted-Drive" where all encrypted files are stored. The app does not access any other files 
               or folders in your Google Drive. All encryption and decryption processes occur locally on your device, 
