@@ -41,13 +41,13 @@ function App() {
           <>
             <h4 style={{marginBottom: '0px',}}>About App</h4>
             <p style={{fontSize: '20px', width: '70%', textAlign: 'center', marginTop: '0px', marginBottom: '0px'}}>
-              This app allows you to securely encrypt your files locally before uploading them to your Google Drive. 
-              This ensures that only you with the password can access your sensitive data. You can easily retrieve original 
+              This app enables you to securely encrypt your files locally before uploading them to your Google Drive. 
+              This ensures only you, with the password, can access your sensitive data. You can easily retrieve original 
               unencrypted files by entering the password used for encryption. The app supports all file types.
             </p>
             <h4 style={{marginBottom: '0px'}}>How We Use Your Data</h4>
             <p style={{fontSize: '20px', width: '70%', textAlign: 'center', marginTop: '0px', marginBottom: '40px'}}>
-              The app uses Google OAuth to authenticate and gain access to your Google Drive. The app creates a dedicated 
+              This app uses Google OAuth to authenticate and gain access to your Google Drive. The app creates a dedicated 
               folder named "Encrypted-Drive" where all encrypted files are stored. The app does not access any other files 
               or folders in your Google Drive. All encryption and decryption processes occur locally on your device, 
               ensuring that unencrypted data and passwords never leave your device.
